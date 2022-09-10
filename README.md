@@ -1,2 +1,2 @@
 # Competitive-Programming
-AC code of Online Judge problems
+AC codes of Online Judge problems
