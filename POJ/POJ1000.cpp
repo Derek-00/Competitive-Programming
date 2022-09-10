@@ -1,0 +1,16 @@
+/**
+ *    author:  willy
+ *    created: Thu, 29 Jul 2021 10:34:34 GMT
+**/
+#include <iostream>
+
+using namespace std;
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(0);
+  int a, b;
+  cin >> a >> b;
+  cout << a + b << '\n';
+  return 0;
+}
