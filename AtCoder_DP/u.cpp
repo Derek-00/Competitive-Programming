@@ -1,47 +1,46 @@
 /**
- *    author:  willy
- *    created: Fri, 10 Dec 2021 07:11:58 GMT
+ *    author:  wy
+ *    created: Sun, 25 Dec 2022 13:58:37 GMT
 **/
 #include <bits/stdc++.h>
 
 using namespace std;
 
-long long a[16][16];
-long long dp[1 << 16];
-long long all[1 << 16];
-
-long long Solve(int s) {
-  if (dp[s] != -1) {
-    return dp[s];
-  }
-  long long res = all[s];
-  for (int i = (s - 1) & s; i > 0; i = (i - 1) & s) {
-    res = max(res, Solve(s ^ i) + all[i]);
-  }
-  return dp[s] = res;
-}
+using i64 = long long;
 
 int main() {
   ios::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
   int n;
   cin >> n;
+
+  vector<vector<int>> a(n, vector<int>(n));
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       cin >> a[i][j];
     }
   }
-  for (int s = 0; s < (1 << 16); s++) {
-    for (int i = 0; i < n; i++) {
-      if (!(s & (1 << i))) continue;
-      for (int j = i + 1; j < n; j++) {
-        if (!(s & (1 << j))) continue;
-        all[s] += a[i][j];
+
+  const int S = 1 << n;
+  vector<i64> f(S);
+  for (int s = 0; s < S; s++) {
+    for (int x = 0; x < n; x++) {
+      if (!(s & (1 << x))) continue;
+      for (int y = x + 1; y < n; y++) {
+        if (!(s & (1 << y))) continue;
+        f[s] += a[x][y];
       }
     }
   }
-  memset(dp, -1, sizeof(dp));
-  dp[0] = 0;
-  cout << Solve((1 << n) - 1) << '\n';
+
+  vector<i64> dp(S);
+  for (int s = 0; s < S; s++) {
+    dp[s] = f[s];
+    for (int bs = s; bs > 0; bs = (bs - 1) & s) {
+      dp[s] = max(dp[s], dp[bs] + dp[s ^ bs]);
+    }
+  }
+
+  cout << dp[S - 1] << '\n';
   return 0;
 }
